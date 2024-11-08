@@ -1,0 +1,26 @@
+name: ci
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+
+  basic:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-20.04, ubuntu-22.04, ubuntu-24.04, windows-2022, macos-14]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Meson
+        run: pip install meson
+
+      - name: Compile project
+        run: meson setup build && mkdir -p build && cd build && meson compile && meson dist
+ 
