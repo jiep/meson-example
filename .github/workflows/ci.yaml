@@ -25,7 +25,7 @@ jobs:
         run: sudo apt install ninja-build
 
       - name: Uninstall LibSSL
-        run: sudo apt -y purge libssl
+        run: sudo apt -y purge libssl-dev
 
       - name: Compile project
         run: meson setup build && mkdir -p build && cd build && meson compile && meson dist
