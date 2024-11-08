@@ -1,28 +1,16 @@
-#include <gtk/gtk.h>
+#include <stdio.h>
+#include <openssl/sha.h>
 
-static void activate(GtkApplication* app, gpointer user_data) {
-  GtkWidget *window;
-  GtkWidget *label;
+int main(void){
+    const unsigned char data_to_hash[13] = "Hello World!";
+    unsigned char hash[SHA256_DIGEST_LENGTH] = {0};
 
-  window = gtk_application_window_new (app);
-  label = gtk_label_new("Hello GNOME!");
-  gtk_container_add (GTK_CONTAINER (window), label);
-  gtk_window_set_title(GTK_WINDOW (window), "Welcome to GNOME");
-  gtk_window_set_default_size(GTK_WINDOW (window), 400, 200);
-  gtk_widget_show_all(window);
-}
+    SHA256(data_to_hash, 12, hash);
 
-int main(int argc, char **argv) {
-  GtkApplication *app;
-  int status;
-
-#if GLIB_CHECK_VERSION(2, 74, 0)
-  app = gtk_application_new(NULL, G_APPLICATION_DEFAULT_FLAGS);
-#else
-  app = gtk_application_new(NULL, G_APPLICATION_FLAGS_NONE);
-#endif
-  g_signal_connect(app, "activate", G_CALLBACK(activate), NULL);
-  status = g_application_run(G_APPLICATION(app), argc, argv);
-  g_object_unref(app);
-  return status;
+    printf("SHA-256(\"%s\") = ", data_to_hash);
+    for(unsigned int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
+	    printf("%02hhX", hash[i]);
+    }
+    printf("\n");
+    return 0;
 }
