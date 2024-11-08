@@ -2,7 +2,7 @@
 #include <openssl/sha.h>
 
 int main(void){
-    const unsigned char data_to_hash[13] = "Hello World!";
+    const unsigned char data_to_hash[] = "Hello World!";
     unsigned char hash[SHA256_DIGEST_LENGTH] = {0};
 
     SHA256(data_to_hash, 12, hash);
